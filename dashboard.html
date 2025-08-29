@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Mini Naukri</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <button id="logoutBtn">Logout</button>
+
+    <div id="recruiterPanel" class="panel" style="display:none;">
+      <h2>Post a Job</h2>
+      <input type="text" id="jobTitle" placeholder="Job Title">
+      <input type="text" id="company" placeholder="Company">
+      <input type="text" id="location" placeholder="Location">
+      <button id="postJobBtn">Post Job</button>
+
+      <h2>Applicants</h2>
+      <div id="applicantsList"></div>
+    </div>
+
+    <div id="seekerPanel" class="panel" style="display:none;">
+      <h2>Available Jobs</h2>
+      <ul id="jobList"></ul>
+    </div>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

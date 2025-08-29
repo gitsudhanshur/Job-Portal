@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Portal - Mini Naukri</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Mini Naukri Job Portal</h1>
+    <div class="auth-box">
+      <h2>Login / Signup</h2>
+      <input type="text" id="name" placeholder="Full Name">
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <select id="role">
+        <option value="seeker">Job Seeker</option>
+        <option value="recruiter">Recruiter</option>
+      </select>
+      <button id="signupBtn">Signup</button>
+      <button id="loginBtn">Login</button>
+    </div>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
