@@ -24,7 +24,16 @@
 
     <div id="seekerPanel" class="panel" style="display:none;">
       <h2>Available Jobs</h2>
-      <ul id="jobList"></ul>
+      <div class="filters">
+        <input type="text" id="searchInput" placeholder="Search jobs or companies...">
+        <select id="locationFilter">
+          <option value="">All Locations</option>
+        </select>
+        <select id="roleFilter">
+          <option value="">All Roles</option>
+        </select>
+      </div>
+      <div id="jobList"></div>
     </div>
   </div>
 

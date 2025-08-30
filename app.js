@@ -65,6 +65,8 @@ async function postJob() {
   }
 }
 
+let allJobs = []; // store all jobs for search & filter
+
 // Seeker - Load Jobs with cards
 async function loadJobs() {
   const jobList = document.getElementById("jobList");
@@ -73,29 +75,94 @@ async function loadJobs() {
   if (jobList && user) {
     const q = query(collection(db, "jobs"), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
-    jobList.innerHTML = "";
-    snapshot.forEach(docSnap => {
-      const job = docSnap.data();
-      const jobId = docSnap.id;
 
-      // Check if already applied
-      const alreadyApplied = job.applicants?.includes(user.uid);
+    allJobs = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
 
-      jobList.innerHTML += `
-        <div class="job-card">
-          <h3>${job.title}</h3>
-          <p><strong>Company:</strong> ${job.company}</p>
-          <p><strong>Location:</strong> ${job.location}</p>
-          <button 
-            onclick="applyJob('${jobId}')" 
-            ${alreadyApplied ? "disabled" : ""}>
-            ${alreadyApplied ? "Applied" : "Apply"}
-          </button>
-        </div>
-      `;
-    });
+    // Populate filters
+    populateFilters(allJobs);
+
+    // Initial render
+    renderJobs(allJobs, user.uid);
   }
 }
+
+// Render jobs (after filters applied)
+function renderJobs(jobs, uid) {
+  const jobList = document.getElementById("jobList");
+  jobList.innerHTML = "";
+
+  jobs.forEach(job => {
+    const alreadyApplied = job.applicants?.includes(uid);
+
+    jobList.innerHTML += `
+      <div class="job-card">
+        <h3>${job.title}</h3>
+        <p><strong>Company:</strong> ${job.company}</p>
+        <p><strong>Location:</strong> ${job.location}</p>
+        <button 
+          onclick="applyJob('${job.id}')" 
+          ${alreadyApplied ? "disabled" : ""}>
+          ${alreadyApplied ? "Applied" : "Apply"}
+        </button>
+      </div>
+    `;
+  });
+
+  if (jobs.length === 0) {
+    jobList.innerHTML = "<p>No matching jobs found.</p>";
+  }
+}
+
+// Populate location & role filters dynamically
+function populateFilters(jobs) {
+  const locationFilter = document.getElementById("locationFilter");
+  const roleFilter = document.getElementById("roleFilter");
+
+  // Unique locations
+  const locations = [...new Set(jobs.map(job => job.location))];
+  locationFilter.innerHTML = `<option value="">All Locations</option>`;
+  locations.forEach(loc => {
+    locationFilter.innerHTML += `<option value="${loc}">${loc}</option>`;
+  });
+
+  // Unique roles (from job titles)
+  const roles = [...new Set(jobs.map(job => job.title))];
+  roleFilter.innerHTML = `<option value="">All Roles</option>`;
+  roles.forEach(r => {
+    roleFilter.innerHTML += `<option value="${r}">${r}</option>`;
+  });
+}
+
+// Apply search & filters
+function applyFilters() {
+  const keyword = document.getElementById("searchInput").value.toLowerCase();
+  const selectedLocation = document.getElementById("locationFilter").value;
+  const selectedRole = document.getElementById("roleFilter").value;
+
+  let filteredJobs = allJobs.filter(job =>
+    (job.title.toLowerCase().includes(keyword) || job.company.toLowerCase().includes(keyword)) &&
+    (selectedLocation === "" || job.location === selectedLocation) &&
+    (selectedRole === "" || job.title === selectedRole)
+  );
+
+  renderJobs(filteredJobs, auth.currentUser?.uid);
+}
+
+// Event listeners
+document.addEventListener("input", (e) => {
+  if (e.target.id === "searchInput") {
+    applyFilters();
+  }
+});
+
+document.addEventListener("change", (e) => {
+  if (e.target.id === "locationFilter" || e.target.id === "roleFilter") {
+    applyFilters();
+  }
+});
 
 // Seeker - Apply Job
 window.applyJob = async function(jobId) {

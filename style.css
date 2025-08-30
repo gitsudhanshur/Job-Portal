@@ -65,6 +65,28 @@ h1 {
   margin-top: 20px;
 }
 
+/* Search & Filters*/
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#searchInput, #locationFilter, #roleFilter {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+#searchInput {
+  flex: 2;
+}
+
+#locationFilter, #roleFilter {
+  flex: 1;
+}
+
 /* Job Cards */
 .job-card {
   background: white;
