@@ -11,6 +11,7 @@
     <h1>Dashboard</h1>
     <button id="logoutBtn">Logout</button>
 
+    <!-- ======================= RECRUITER PANEL ======================= -->
     <div id="recruiterPanel" class="panel" style="display:none;">
       <h2>Post a Job</h2>
       <input type="text" id="jobTitle" placeholder="Job Title">
@@ -22,8 +23,10 @@
       <div id="applicantsList"></div>
     </div>
 
+    <!-- ======================== JOB SEEKER PANEL ====================== -->
     <div id="seekerPanel" class="panel" style="display:none;">
       <h2>Available Jobs</h2>
+
       <div class="filters">
         <input type="text" id="searchInput" placeholder="Search jobs or companies...">
         <select id="locationFilter">
@@ -33,6 +36,7 @@
           <option value="">All Roles</option>
         </select>
       </div>
+
       <div id="jobList"></div>
     </div>
   </div>
